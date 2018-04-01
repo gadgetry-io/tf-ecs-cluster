@@ -9,10 +9,25 @@ Content-Type: text/x-shellscript; charset="us-ascii"
 set -e
 
 # Configure ECS
+yum install -y ecs-init
+
+mkdir -p /etc/ecs && touch /etc/ecs/ecs.config
 echo ECS_CLUSTER=${ecs_cluster} >> /etc/ecs/ecs.config
 echo ECS_AVAILABLE_LOGGING_DRIVERS='["json-file","awslogs"]' >> /etc/ecs/ecs.config
 echo ECS_ENABLE_TASK_IAM_ROLE=true >> /etc/ecs/ecs.config
 echo ECS_ENABLE_CONTAINER_METADATA=true >> /etc/ecs/ecs.config
+
+echo 'net.ipv4.conf.all.route_localnet = 1' >> /etc/sysctl.conf
+sysctl -p /etc/sysctl.conf
+
+# Run the following commands on your container instance to enable IAM roles for tasks. For more information, see IAM Roles for Tasks.
+iptables -t nat -A PREROUTING -p tcp -d 169.254.170.2 --dport 80 -j DNAT --to-destination 127.0.0.1:51679
+iptables -t nat -A OUTPUT -d 169.254.170.2 -p tcp -m tcp --dport 80 -j REDIRECT --to-ports 51679
+iptables-save > /etc/sysconfig/iptables
+
+service docker start
+start ecs
+chkconfig --add docker
 
 PATH=$PATH:/usr/local/bin
 
