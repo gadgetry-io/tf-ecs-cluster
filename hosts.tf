@@ -20,7 +20,6 @@ resource "aws_launch_configuration" "ecs" {
 
 resource "aws_autoscaling_group" "ecs" {
   name                 = "${var.cluster_name}-ecs"
-  availability_zones   = ["${keys(var.vpc_private_subnets)}"]
   min_size             = "${var.ecs_autoscale_min}"
   max_size             = "${var.ecs_autoscale_max}"
   launch_configuration = "${aws_launch_configuration.ecs.name}"
