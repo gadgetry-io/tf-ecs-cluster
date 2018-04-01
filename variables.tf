@@ -1,5 +1,3 @@
-variable "projectname" {}
-
 variable "private_security_group" {}
 
 variable "private_subnets" {
@@ -16,10 +14,6 @@ variable "cluster_name" {}
 
 variable "provisioner_key_name" {
   default = "root"
-}
-
-variable "vpc_private_subnets" {
-  type = "map"
 }
 
 variable "ecs_host_ami" {
