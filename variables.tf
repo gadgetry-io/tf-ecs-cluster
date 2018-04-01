@@ -31,3 +31,5 @@ variable "ecs_autoscale_min" {
 variable "ecs_autoscale_max" {
   default = 5
 }
+
+variable "kms_key_id" {}
