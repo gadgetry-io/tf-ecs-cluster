@@ -48,22 +48,4 @@ PATH=$PATH:/usr/local/bin
 
 yum update -y
 
-yum install -y nfs-utils >/dev/null
-
-# Get region of EC2 from instance metadata
-EC2_AVAIL_ZONE=`curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone`
-EC2_REGION="`echo \"$EC2_AVAIL_ZONE\" | sed -e 's:\([0-9][0-9]*\)[a-z]*\$:\\1:'`"
-DIR_SRC=$EC2_AVAIL_ZONE.${efs_id}.efs.$EC2_REGION.amazonaws.com
-DIR_TGT=/mnt/efs
-
-# Mount EFS
-mkdir -p $DIR_TGT
-mount -t nfs4 $DIR_SRC:/ $DIR_TGT
-
-# Backup fstab
-cp -p /etc/fstab /etc/fstab.back-$(date +%F)
-
-# Append line to fstab
-echo -e "$DIR_SRC:/ \t\t $DIR_TGT \t\t nfs \t\t defaults \t\t 0 \t\t 0" | tee -a /etc/fstab
-
 --===============BOUNDARY==--

@@ -65,6 +65,5 @@ data "template_file" "user_data" {
   vars {
     ecs_cluster = "${aws_ecs_cluster.main.name}"
     env         = "${terraform.workspace}"
-    efs_id      = "${aws_efs_file_system.main.id}"
   }
 }
