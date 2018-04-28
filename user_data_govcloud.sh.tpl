@@ -9,10 +9,25 @@ Content-Type: text/x-shellscript; charset="us-ascii"
 set -e
 
 # Configure ECS
+yum install -y ecs-init
+
+mkdir -p /etc/ecs && touch /etc/ecs/ecs.config
 echo ECS_CLUSTER=${ecs_cluster} >> /etc/ecs/ecs.config
 echo ECS_AVAILABLE_LOGGING_DRIVERS='["json-file","awslogs"]' >> /etc/ecs/ecs.config
 echo ECS_ENABLE_TASK_IAM_ROLE=true >> /etc/ecs/ecs.config
 echo ECS_ENABLE_CONTAINER_METADATA=true >> /etc/ecs/ecs.config
+
+echo 'net.ipv4.conf.all.route_localnet = 1' >> /etc/sysctl.conf
+sysctl -p /etc/sysctl.conf
+
+# Run the following commands on your container instance to enable IAM roles for tasks. For more information, see IAM Roles for Tasks.
+iptables -t nat -A PREROUTING -p tcp -d 169.254.170.2 --dport 80 -j DNAT --to-destination 127.0.0.1:51679
+iptables -t nat -A OUTPUT -d 169.254.170.2 -p tcp -m tcp --dport 80 -j REDIRECT --to-ports 51679
+iptables-save > /etc/sysconfig/iptables
+
+service docker start
+start ecs
+chkconfig --add docker
 
 PATH=$PATH:/usr/local/bin
 
@@ -38,6 +53,10 @@ unzip awscli-bundle.zip
 ./awscli-bundle/install -i /usr/local/aws -b /usr/bin/aws
 rm -rf ./awscli-bundle awscli-bundle.zip
 
+if [ ! -z "${dockerhub_username}" ]; then
+  docker login --username "${dockerhub_username}" --password "${dockerhub_password}"
+fi
+
 --===============BOUNDARY==
 MIME-Version: 1.0
 Content-Type: text/cloud-boothook; charset="us-ascii"
@@ -47,23 +66,5 @@ Content-Type: text/cloud-boothook; charset="us-ascii"
 PATH=$PATH:/usr/local/bin
 
 yum update -y
-
-yum install -y nfs-utils >/dev/null
-
-# Get region of EC2 from instance metadata
-EC2_AVAIL_ZONE=`curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone`
-EC2_REGION="`echo \"$EC2_AVAIL_ZONE\" | sed -e 's:\([0-9][0-9]*\)[a-z]*\$:\\1:'`"
-DIR_SRC=$EC2_AVAIL_ZONE.${efs_id}.efs.$EC2_REGION.amazonaws.com
-DIR_TGT=/mnt/efs
-
-# Mount EFS
-mkdir -p $DIR_TGT
-mount -t nfs4 $DIR_SRC:/ $DIR_TGT
-
-# Backup fstab
-cp -p /etc/fstab /etc/fstab.back-$(date +%F)
-
-# Append line to fstab
-echo -e "$DIR_SRC:/ \t\t $DIR_TGT \t\t nfs \t\t defaults \t\t 0 \t\t 0" | tee -a /etc/fstab
 
 --===============BOUNDARY==--
