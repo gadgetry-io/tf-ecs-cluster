@@ -13,6 +13,8 @@ echo ECS_CLUSTER=${ecs_cluster} >> /etc/ecs/ecs.config
 echo ECS_AVAILABLE_LOGGING_DRIVERS='["json-file","awslogs"]' >> /etc/ecs/ecs.config
 echo ECS_ENABLE_TASK_IAM_ROLE=true >> /etc/ecs/ecs.config
 echo ECS_ENABLE_CONTAINER_METADATA=true >> /etc/ecs/ecs.config
+echo ECS_ENGINE_AUTH_TYPE=docker >> /etc/ecs/ecs.config
+echo 'ECS_ENGINE_AUTH_DATA={"https://index.docker.io/v1/":{"username":"${dockerhub_username}","password":"${dockerhub_password}"}}' >> /etc/ecs/ecs.config
 
 PATH=$PATH:/usr/local/bin
 

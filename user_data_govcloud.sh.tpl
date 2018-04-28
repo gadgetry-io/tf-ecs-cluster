@@ -16,6 +16,8 @@ echo ECS_CLUSTER=${ecs_cluster} >> /etc/ecs/ecs.config
 echo ECS_AVAILABLE_LOGGING_DRIVERS='["json-file","awslogs"]' >> /etc/ecs/ecs.config
 echo ECS_ENABLE_TASK_IAM_ROLE=true >> /etc/ecs/ecs.config
 echo ECS_ENABLE_CONTAINER_METADATA=true >> /etc/ecs/ecs.config
+echo ECS_ENGINE_AUTH_TYPE=docker >> /etc/ecs/ecs.config
+echo 'ECS_ENGINE_AUTH_DATA={"https://index.docker.io/v1/":{"username":"${dockerhub_username}","password":"${dockerhub_password}"}}' >> /etc/ecs/ecs.config
 
 echo 'net.ipv4.conf.all.route_localnet = 1' >> /etc/sysctl.conf
 sysctl -p /etc/sysctl.conf
@@ -52,10 +54,6 @@ curl -n "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.z
 unzip awscli-bundle.zip
 ./awscli-bundle/install -i /usr/local/aws -b /usr/bin/aws
 rm -rf ./awscli-bundle awscli-bundle.zip
-
-if [ ! -z "${dockerhub_username}" ]; then
-  docker login --username "${dockerhub_username}" --password "${dockerhub_password}"
-fi
 
 --===============BOUNDARY==
 MIME-Version: 1.0
