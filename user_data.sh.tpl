@@ -53,6 +53,10 @@ unzip awscli-bundle.zip
 ./awscli-bundle/install -i /usr/local/aws -b /usr/bin/aws
 rm -rf ./awscli-bundle awscli-bundle.zip
 
+if [ ! -z "${dockerhub_username}" ]; then
+  docker login --username "${dockerhub_username}" --password "${dockerhub_password}"
+fi
+
 --===============BOUNDARY==
 MIME-Version: 1.0
 Content-Type: text/cloud-boothook; charset="us-ascii"
