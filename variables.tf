@@ -33,3 +33,11 @@ variable "ecs_autoscale_max" {
 }
 
 variable "kms_key_id" {}
+
+variable "dockerhub_username" {
+  default = ""
+}
+
+variable "dockerhub_password" {
+  default = ""
+}

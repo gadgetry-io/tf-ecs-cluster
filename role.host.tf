@@ -23,6 +23,7 @@ data "aws_iam_policy_document" "ecs_host" {
         "cloudwatch:Get*",
         "cloudwatch:Describe*",
         "cloudwatch:List*",
+        "cloudwatch:Put*",
         "elasticfilesystem:DescribeFileSystems",
         "elasticfilesystem:DescribeMountTargets",
       ]
