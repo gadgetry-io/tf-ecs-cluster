@@ -41,3 +41,17 @@ variable "dockerhub_username" {
 variable "dockerhub_password" {
   default = ""
 }
+
+# Lambda autoscaling variables
+variable "s3_bucket" {
+  type = "string"
+}
+
+variable "s3_key" {
+  type = "string"
+}
+
+variable "source_code_hash" {
+  type    = "string"
+  default = ""
+}
