@@ -71,7 +71,7 @@ resource "aws_iam_role_policy_attachment" "ecs_host" {
 }
 
 resource "aws_iam_role_policy" "inline_policy" {
-  name   = "test_policy"
+  name   = "inline_policy"
   role   = "${aws_iam_role.ecs_host.id}"
   policy = "${var.inline_host_policy}"
 }

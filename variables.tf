@@ -64,7 +64,7 @@ variable "additional_user_data" {
 variable "inline_host_policy" {
   type = "string"
 
-  policy = <<EOF
+  default = <<EOF
 {
   "Version": "2012-10-17",
   "Statement": [
