@@ -65,6 +65,7 @@ resource "aws_lambda_function" "ecs_autoscale_in" {
     variables = {
       CLUSTER                    = "${terraform.workspace}"
       DESIRED_MEMORY_RESERVATION = "${aws_cloudwatch_metric_alarm.scale_out_ecs.threshold}"
+      MIN_CLUSTER_SIZE           = "${var.ecs_autoscale_min}"
     }
   }
 
