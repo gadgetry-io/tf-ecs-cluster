@@ -55,3 +55,8 @@ variable "source_code_hash" {
   type    = "string"
   default = ""
 }
+
+variable "additional_user_data" {
+  type    = "string"
+  default = ""
+}
