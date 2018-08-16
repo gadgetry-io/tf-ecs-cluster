@@ -60,3 +60,22 @@ variable "additional_user_data" {
   type    = "string"
   default = ""
 }
+
+variable "inline_host_policy" {
+  type = "string"
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "ec2:Describe*"
+      ],
+      "Effect": "Allow",
+      "Resource": "*"
+    }
+  ]
+}
+EOF
+}
