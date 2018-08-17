@@ -40,6 +40,8 @@ unzip awscli-bundle.zip
 ./awscli-bundle/install -i /usr/local/aws -b /usr/bin/aws
 rm -rf ./awscli-bundle awscli-bundle.zip
 
+${additional_user_data}
+
 --===============BOUNDARY==
 MIME-Version: 1.0
 Content-Type: text/cloud-boothook; charset="us-ascii"
@@ -67,7 +69,5 @@ cp -p /etc/fstab /etc/fstab.back-$(date +%F)
 
 # Append line to fstab
 echo -e "$DIR_SRC:/ \t\t $DIR_TGT \t\t nfs \t\t defaults \t\t 0 \t\t 0" | tee -a /etc/fstab
-
-${additional_user_data}
 
 --===============BOUNDARY==--
