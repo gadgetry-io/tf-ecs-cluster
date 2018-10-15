@@ -70,6 +70,12 @@ resource "aws_iam_role_policy_attachment" "ecs_host" {
   policy_arn = "${aws_iam_policy.ecs_host.arn}"
 }
 
+resource "aws_iam_role_policy_attachment" "additional_policy_attachments" {
+  count      = "${length(var.additional_policy_attachments)}"
+  role       = "${aws_iam_role.ecs_host.name}"
+  policy_arn = "${element(var.additional_policy_attachments, count.index)}"
+}
+
 resource "aws_iam_role_policy" "inline_policy" {
   name   = "inline_policy"
   role   = "${aws_iam_role.ecs_host.id}"

@@ -79,3 +79,8 @@ variable "inline_host_policy" {
 }
 EOF
 }
+
+variable "additional_policy_attachments" {
+  type    = "list"
+  default = []
+}
