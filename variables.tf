@@ -41,3 +41,8 @@ variable "dockerhub_username" {
 variable "dockerhub_password" {
   default = ""
 }
+
+variable "additional_user_data" {
+  type    = "string"
+  default = ""
+}
