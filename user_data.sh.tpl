@@ -9,6 +9,7 @@ Content-Type: text/x-shellscript; charset="us-ascii"
 set -e
 
 # Configure ECS
+cloud-init-per once docker_options echo 'OPTIONS="$${OPTIONS} --storage-opt dm.basesize=${dm_basesize}"' >> /etc/sysconfig/docker
 echo ECS_CLUSTER=${ecs_cluster} >> /etc/ecs/ecs.config
 echo ECS_AVAILABLE_LOGGING_DRIVERS='["json-file","awslogs"]' >> /etc/ecs/ecs.config
 echo ECS_ENABLE_TASK_IAM_ROLE=true >> /etc/ecs/ecs.config

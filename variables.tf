@@ -24,6 +24,11 @@ variable "ecs_host_size" {
   default = "m4.large"
 }
 
+variable "dm_basesize" {
+  description = "Default limit for Docker container volumes"
+  default     = "20G"
+}
+
 variable "ecs_autoscale_min" {
   default = 3
 }

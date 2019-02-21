@@ -8,5 +8,6 @@ data "template_file" "user_data" {
     dockerhub_username   = "${var.dockerhub_username}"
     dockerhub_password   = "${var.dockerhub_password}"
     additional_user_data = "${var.additional_user_data}"
+    dm_basesize          = "${var.dm_basesize}"
   }
 }
