@@ -89,3 +89,7 @@ variable "additional_policy_attachments" {
   type    = "list"
   default = []
 }
+
+variable "efs_throughput" {
+  default = "0"
+}

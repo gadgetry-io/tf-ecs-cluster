@@ -1,7 +1,9 @@
 resource "aws_efs_file_system" "main" {
-  creation_token = "${var.cluster_name}-docker-storage"
-  encrypted      = true
-  kms_key_id     = "${var.kms_key_id}"
+  creation_token                  = "${var.cluster_name}-docker-storage"
+  encrypted                       = true
+  kms_key_id                      = "${var.kms_key_id}"
+  throughput_mode                 = "${var.efs_throughput == "0" ? "bursting" : "provisioned"}"
+  provisioned_throughput_in_mibps = "${var.efs_throughput}"
 
   tags {
     Name        = "${var.cluster_name} Docker Storage"
