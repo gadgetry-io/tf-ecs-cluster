@@ -93,3 +93,11 @@ variable "additional_policy_attachments" {
 variable "efs_throughput" {
   default = "0"
 }
+
+variable "root_volume_size" {
+  default = 60
+}
+
+variable "docker_volume_size" {
+  default = 250
+}

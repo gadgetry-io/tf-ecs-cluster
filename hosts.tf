@@ -10,7 +10,13 @@ resource "aws_launch_configuration" "ecs" {
   root_block_device {
     delete_on_termination = true
     volume_type           = "gp2"
-    volume_size           = 128
+    volume_size           = "${var.root_volume_size}"
+  }
+
+  # Block device used for docker
+  ebs_block_device {
+    device_name = "/dev/xvdcz"
+    volume_size = "${var.docker_volume_size}"
   }
 
   lifecycle {
@@ -24,6 +30,7 @@ resource "aws_autoscaling_group" "ecs" {
   max_size             = "${var.ecs_autoscale_max}"
   launch_configuration = "${aws_launch_configuration.ecs.name}"
   vpc_zone_identifier  = ["${var.private_subnets}"]
+  termination_policies = ["OldestInstance", "OldestLaunchConfiguration", "Default"]
 
   enabled_metrics = [
     "GroupMinSize",
