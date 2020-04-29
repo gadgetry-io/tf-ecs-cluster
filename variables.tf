@@ -4,12 +4,6 @@ variable "private_subnets" {
   type = "list"
 }
 
-variable "public_security_group" {}
-
-variable "public_subnets" {
-  type = "list"
-}
-
 variable "cluster_name" {}
 
 variable "provisioner_key_name" {
@@ -44,20 +38,6 @@ variable "dockerhub_username" {
 }
 
 variable "dockerhub_password" {
-  default = ""
-}
-
-# Lambda autoscaling variables
-variable "s3_bucket" {
-  type = "string"
-}
-
-variable "s3_key" {
-  type = "string"
-}
-
-variable "source_code_hash" {
-  type    = "string"
   default = ""
 }
 

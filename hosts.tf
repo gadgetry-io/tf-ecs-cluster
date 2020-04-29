@@ -25,12 +25,13 @@ resource "aws_launch_configuration" "ecs" {
 }
 
 resource "aws_autoscaling_group" "ecs" {
-  name                 = "${var.cluster_name}-ecs"
-  min_size             = "${var.ecs_autoscale_min}"
-  max_size             = "${var.ecs_autoscale_max}"
-  launch_configuration = "${aws_launch_configuration.ecs.name}"
-  vpc_zone_identifier  = ["${var.private_subnets}"]
-  termination_policies = ["OldestInstance", "OldestLaunchConfiguration", "Default"]
+  name                  = "${var.cluster_name}-ecs"
+  min_size              = "${var.ecs_autoscale_min}"
+  max_size              = "${var.ecs_autoscale_max}"
+  launch_configuration  = "${aws_launch_configuration.ecs.name}"
+  vpc_zone_identifier   = ["${var.private_subnets}"]
+  protect_from_scale_in = true
+  default_cooldown      = 300
 
   enabled_metrics = [
     "GroupMinSize",
@@ -61,7 +62,7 @@ resource "aws_autoscaling_group" "ecs" {
     },
   ]
 
-  lifecycle {
-    create_before_destroy = true
-  }
+  # lifecycle {
+  #   create_before_destroy = true
+  # }
 }
